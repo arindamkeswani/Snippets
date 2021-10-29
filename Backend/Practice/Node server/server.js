@@ -5,31 +5,32 @@
 const http = require('http'); //retrieves http module
 const fs = require('fs');
 const _ = require('lodash');
+const e = require('express');
 //now we want to create server
 
 //run everytime a request is made
 const server = http.createServer((req, res)=>{
-    console.log('request made from browser to server');
+    console.log('request made from browser to server from port 3000');
     //req obj contains data such as path of request, what is the request, type of request, meta data, host
     //response object will send the info
 
-    let num = _.random(0,20);
-    console.log(num);
+    // let num = _.random(0,20);
+    // console.log(num);
 
-    function greet(){
-        console.log("Hello!");
-    }
+    // function greet(){
+    //     console.log("Hello!");
+    // }
 
-    greet();
-    greet();
+    // greet();
+    // greet();
     //_______________________________________                                            //// Code 2 
      //show in code 2
     // console.log(req);
-    console.log(req.method); //type of request: get, post, patch, delete | "GET" received as output
-    console.log(req.url); //url of the requester | since we are calling from out own device, we get "/", no other url. Try with aboutUs 
+    // console.log(req.method); //type of request: get, post, patch, delete | "GET" received as output
+    // console.log(req.url); //url of the requester | since we are calling from out own device, we get "/", no other url. Try with aboutUs 
     //helps us know what page is being requested by the requester
 
-    // when we send response, we need to specify what type of content are we sending pdf, excel file, or anythign else
+    //when we send a response, we need to specify what type of content are we sending e.g. pdf, excel file, or anything else.
     // res.setHeader('Content-Type', 'text/plain');
     // res.write('Hello World');
     // res.end();
@@ -71,21 +72,19 @@ const server = http.createServer((req, res)=>{
     }
 
     // fs.readFile("views/something.html", (err, fileData)=>{
-    fs.readFile(path, (err, fileData)=>{
-        if(err){
-            console.log(err);
-        }
-        else{
-            // res.write(fileData);
-            // res.end();
+    // fs.readFile(path, (err, fileData)=>{
+    //     if(err){
+    //         console.log(err);
+    //     }
+    //     else{
+    //         // res.write(fileData);
+    //         // res.end();
 
-            // res.write(fileData);
-            res.end(fileData);
-        }
-    })
+    //         // res.write(fileData);
+    //         res.end(fileData);
+    //     }
+    // })
     //______________________________ code 4
-
-
 
 })
 
