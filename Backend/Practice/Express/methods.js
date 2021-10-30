@@ -45,9 +45,44 @@ app.patch('/users', (req, res)=>{
 
 
 //7 delete
-app.delete('/users', (req,res)=>{
-    users = {};
-    res.json({
-        message: "Data has been deleted"
-    });
-});
+// app.delete('/users', (req,res)=>{
+//     users = {};
+//     res.json({
+//         message: "Data has been deleted"
+//     });
+// });
+
+////////////////////
+//video 9
+users=[
+    {
+        'id': 1,
+        'name': "Bob"
+    },
+    {
+        'id':2,
+        'name': "Alice"
+    },
+    {
+        'id':3,
+        'name': "Adam"
+    }
+];
+
+app.get('/users/:id', (req, res)=>{
+    res.send("User ID received:");
+    console.log(req.params.id);
+})
+
+app.get('/users/:username', (req, res)=>{
+    console.log(req.params.username);
+    console.log(req.params);
+    res.send("Username received:");
+})
+
+
+app.get('/users', (req, res)=>{
+    console.log("Hello");
+    console.log(req.query);
+    res.send(users);
+})

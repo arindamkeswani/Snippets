@@ -60,30 +60,30 @@ const server = http.createServer((req, res)=>{
             break;
 
         //SHOW BELOW CASE IN STATUS CODE VIDEO
-        case '/about-me':
-            // res.setHeader('Location', '/about');
-            res.statusCode=301; //permanent redirect
-            res.end();
+        // case '/about-me':
+        //     // res.setHeader('Location', '/about');
+        //     // res.statusCode=301; //permanent redirect
+        //     res.end();
         default:
-            res.statusCode = 404; //SHOW IN STATUS CODE VIDEO
+            // res.statusCode = 404; //SHOW IN STATUS CODE VIDEO
             path+='/404.html';
             break;
         
     }
 
     // fs.readFile("views/something.html", (err, fileData)=>{
-    // fs.readFile(path, (err, fileData)=>{
-    //     if(err){
-    //         console.log(err);
-    //     }
-    //     else{
-    //         // res.write(fileData);
-    //         // res.end();
+    fs.readFile(path, (err, fileData)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            // res.write(fileData);
+            // res.end();
 
-    //         // res.write(fileData);
-    //         res.end(fileData);
-    //     }
-    // })
+            // res.write(fileData);
+            res.end(fileData);
+        }
+    })
     //______________________________ code 4
 
 })
