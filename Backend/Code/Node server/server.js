@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const _ = require('lodash');
 
 const server = http.createServer((req, res)=>{
     console.log("Request made from browser to server at port 3000");
@@ -15,9 +16,16 @@ const server = http.createServer((req, res)=>{
             path+="/index.html";
             break;
         case '/about':
+            res.statusCode = 200;
             path+="/about.html";
             break;
+        case '/about-abcdef':
+            res.setHeader('Location', '/about');
+            res.statusCode = 301;
+            res.end();
+            break;
         default:
+            res.statusCode = 404;
             path+="/404.html";
     }
 
