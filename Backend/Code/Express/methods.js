@@ -23,42 +23,42 @@ let users = [{
 }]
 
 
-//GET
-// app.get('/users', (req, res) => {
-//     res.send(users);
-// })
+GET
+app.get('/users', (req, res) => {
+    res.send(users);
+})
 
-// //POST
-// app.post('/users', (req, res) => {
-//     console.log(req.body);
-//     users = req.body;
-//     res.json({
-//         message: "Data received successfully",
-//         user: req.body
-//     });
-// });
+//POST
+app.post('/users', (req, res) => {
+    console.log(req.body);
+    users = req.body;
+    res.json({
+        message: "Data received successfully",
+        user: req.body
+    });
+});
 
-// //PATCH
-// app.patch('/users', (req, res) => {
-//     console.log("req.body->", req.body);
+//PATCH
+app.patch('/users', (req, res) => {
+    console.log("req.body->", req.body);
 
-//     let dataToBeUpdatedInOriginalObject = req.body;
-//     for (key in dataToBeUpdatedInOriginalObject) {
-//         users[key] = dataToBeUpdatedInOriginalObject[key];
-//     }
+    let dataToBeUpdatedInOriginalObject = req.body;
+    for (key in dataToBeUpdatedInOriginalObject) {
+        users[key] = dataToBeUpdatedInOriginalObject[key];
+    }
 
-//     res.json({
-//         message: "Data updated successfully"
-//     })
-// })
+    res.json({
+        message: "Data updated successfully"
+    })
+})
 
-// //DELETE
-// app.delete('/users', (req, res) => {
-//     users = {};
-//     res.json({
-//         message: "Data deleted successfully"
-//     })
-// })
+//DELETE
+app.delete('/users', (req, res) => {
+    users = {};
+    res.json({
+        message: "Data deleted successfully"
+    })
+})
 
 /////////////////////////////////
 
