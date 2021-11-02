@@ -42,8 +42,17 @@ app.use("/auth", authRouter)
 
 authRouter
     .route('/signup')
-    .get(getSignUp)
+    .get(middleware, getSignUp, middleware2)
     .post(postSignUp);
+
+function middleware(req, res, next){
+    console.log("Middleware encountered");
+    next();
+}
+function middleware2(req, res, next){
+  console.log("Middleware 2 ended req/res cycle");
+  res.sendFile('./public/index.html', {root:__dirname});
+}
 /////////////////////////MOUNTING
 
 function getUser(req,res){
@@ -102,8 +111,10 @@ function getUserByID(req,res){
 ////////////////////////////////////////////////////////////////
 
 
-function getSignUp(req,res){
-    res.sendFile('./public/index.html', {root:__dirname});
+function getSignUp(req,res, next){
+    console.log("getSignUp encountered");
+    // res.sendFile('./public/index.html', {root:__dirname});
+    next();
 }
 
 //now make sign up page
