@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const emailValidator = require('email-validator');
 
  //Middleware function used in POST method to convert front-end data to JSON format
 app.use(express.json()); //3
@@ -104,7 +105,7 @@ async function deleteUser(req,res){
     //     message: "Data has been deleted"
     // });
 
-    let user = await userModel.findOneAndDelete({email:"testpost@gmail.com"});
+    let user = await userModel.findOneAndDelete({email:"testhook@gmail.com"});
 
     res.json({
         message:"data has been deleted",
@@ -181,7 +182,10 @@ const userSchema = mongoose.Schema({
     email: {
         type:String,
         required:true,
-        unique: true
+        unique: true,
+        validate:function(){
+            return emailValidator.validate(this.email)
+        }
     },
     password:{
         type:String,
@@ -191,10 +195,25 @@ const userSchema = mongoose.Schema({
     confirmPassword:{
         type:String,
         required:true,
-        minLength:8
+        minLength:8,
+        validate: function(){
+            return this.confirmPassword==this.password
+        }
     } 
 });
 
+
+// userSchema.pre('save', function(){
+//     console.log("Before saving in db", this);
+// })
+
+// userSchema.post('save', function(doc){
+//     console.log("After saving in db", doc);
+// })
+
+userSchema.pre('save', function(){
+    this.confirmPassword=undefined;//wont save in db now
+})
 //model
 
 //model name, shcema name
