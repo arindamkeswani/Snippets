@@ -45,7 +45,6 @@ authRouter
     .route('/signup')
     .get(middleware, getSignUp, middleware2)
     .post(postSignUp);
-
 function middleware(req, res, next){
     console.log("Middleware encountered");
     next();
@@ -56,13 +55,14 @@ function middleware2(req, res, next){
 }
 /////////////////////////MOUNTING
 
-function getUser(req,res){
-    res.send(users);
+async function getUser(req,res){
+    // res.send(users);
 
     //CRUD video
-    // let allUsers = await userModel.find();
-    // res.json({message:"List of all users:", 
-    //         data: allUsers});
+    let allUsers = await userModel.find();
+    // let allUsers = await userModel.findOne({name:"Arindam"});
+    res.json({message:"List of all users:", 
+            data: allUsers});
 }
 
 function postUser(req,res){
@@ -74,28 +74,42 @@ function postUser(req,res){
     })
 }
 
-function updateUser(req,res){
-    console.log('req.body->',req.body);
+async function updateUser(req,res){
+    // console.log('req.body->',req.body);
 
 
-    //6
+    // //6
+    // let dataToBeUpdated= req.body;
+    // for(key in dataToBeUpdated){
+    //     users[key] = dataToBeUpdated[key];
+    // }
+    // //6
+
+    // //update data in users object
+    // res.json({
+    //     message:"data updated successfully"
+    // })
+
+    //CRUD video
     let dataToBeUpdated= req.body;
-    for(key in dataToBeUpdated){
-        users[key] = dataToBeUpdated[key];
-    }
-    //6
-
-    //update data in users object
+    let user = await userModel.findOneAndUpdate({email: "aaa@gmail.com"}, dataToBeUpdated)
     res.json({
         message:"data updated successfully"
     })
 }
 
-function deleteUser(req,res){
-    users = {};
+async function deleteUser(req,res){
+    // users = {};
+    // res.json({
+    //     message: "Data has been deleted"
+    // });
+
+    let user = await userModel.findOneAndDelete({email:"testpost@gmail.com"});
+
     res.json({
-        message: "Data has been deleted"
-    });
+        message:"data has been deleted",
+        data:user
+    })
 }
 
 function getUserByID(req,res){
@@ -125,14 +139,23 @@ function getSignUp(req,res, next){
 
 //now make sign up page
 
-function postSignUp(req,res){
+async function postSignUp(req,res){
     //data is in body of request. Fetch it
-    let obj = req.body;
-    console.log("backend",obj);
+    // let obj = req.body;
+    // console.log("backend",obj);
+    // res.json({
+    //     message: "User signed up.",
+    //     data:obj
+    // });
+
+    //CRUD video
+    let dataObj = req.body
+    let user = await userModel.create(dataObj);
+
     res.json({
-        message: "User signed up.",
-        data:obj
-    });
+        message: "user signed up",
+        data: user
+    })
 }
 
 
@@ -177,14 +200,14 @@ const userSchema = mongoose.Schema({
 //model name, shcema name
 const userModel = mongoose.model('userModel', userSchema);
 
-(async function createUser(){
-    let user={
-        name:'Arindam 2',
-        email:"aaaa@gmail.com",
-        password: "12345678",
-        confirmPassword:"12345678"
-    }
+// (async function createUser(){
+//     let user={
+//         name:'Arindam 2',
+//         email:"aaaa@gmail.com",
+//         password: "12345678",
+//         confirmPassword:"12345678"
+//     }
 
-    let data = await userModel.create(user);
-    console.log(data);
-})()
+//     let data = await userModel.create(user);
+//     console.log(data);
+// })()
