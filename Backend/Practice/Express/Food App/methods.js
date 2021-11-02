@@ -219,14 +219,15 @@ userSchema.pre('save', function(){
 //model name, shcema name
 const userModel = mongoose.model('userModel', userSchema);
 
-// (async function createUser(){
-//     let user={
-//         name:'Arindam 2',
-//         email:"aaaa@gmail.com",
-//         password: "12345678",
-//         confirmPassword:"12345678"
-//     }
+(async function createUser(){
+    let user={
+        name:'Arindam 2',
+        email:"aaaa@gmail.com",
+        password: "12345678",
+        confirmPassword:"12345678"
+    }
 
-//     let data = await userModel.create(user);
-//     console.log(data);
-// })()
+    let data = await userModel.create(user);
+    console.log(data);
+})()
+
