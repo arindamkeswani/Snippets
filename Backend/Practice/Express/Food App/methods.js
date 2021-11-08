@@ -3,10 +3,12 @@ const app = express();
 // const mongoose = require('mongoose');
 // const emailValidator = require('email-validator');
 const userModel = require('./models/userModel');
+const cookieParser = require('cookie-parser')
  //Middleware function used in POST method to convert front-end data to JSON format
 app.use(express.json()); //3
 
 app.listen(3000);
+app.use(cookieParser());
 
 let users=[
     {
@@ -34,11 +36,19 @@ userRouter
     .patch(updateUser)
     .delete(deleteUser);
 
-userRouter
-    .route('/:id')
-    .get(getUserByID);
+    
+    userRouter
+    .route('/getCookies')
+    .get(getCookies)
+    
+    userRouter
+    .route('/setCookies')
+    .get(setCookies)
 
-//SIGN UP FORM VIDEO
+    userRouter
+        .route('/:id')
+        .get(getUserByID);
+    //SIGN UP FORM VIDEO
 const authRouter = express.Router();
 app.use("/auth", authRouter)
 
@@ -166,3 +176,16 @@ async function postSignUp(req,res){
 
 
 
+//////Cookies
+function setCookies(req,res){
+    // res.setHeader('Set-Cookie', 'isLoggedIn=true');
+    res.cookie('isLoggedIn', true, {maxAge:1000*60*60*24, secure:true, httpOnly:true});
+    res.cookie('isPrimeMember', true);
+    res.send('Cookies have been set');
+}
+
+function getCookies(req,res){
+    let cookies = req.cookies;
+    console.log(cookies);
+    res.send("cookies received");
+}
