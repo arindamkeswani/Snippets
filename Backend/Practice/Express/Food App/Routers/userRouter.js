@@ -1,9 +1,12 @@
 const express = require('express');
 const userRouter = express.Router();
 const userModel = require('../models/userModel');
+
+const protectRoute = require("./authHelper");
+
 userRouter
     .route('/')
-    .get(getUser)
+    .get(protectRoute, getUser)
     .post(postUser)
     .patch(updateUser)
     .delete(deleteUser);
@@ -109,5 +112,21 @@ function getCookies(req,res){
     console.log(cookies);
     res.send("cookies received");
 }
+
+
+///////ProtectRoute
+// // let isLoggedIn = false; //user logged in or not
+// function protectRoute(req,res,next){
+//     // if(isLoggedIn){
+//     if(req.cookies.isLoggedIn){
+//         next();
+//     }
+//     else{
+//         return res.json({
+//             message: "Operation not allowed"
+//         })
+//     }
+// }
+    
 
 module.exports = userRouter;

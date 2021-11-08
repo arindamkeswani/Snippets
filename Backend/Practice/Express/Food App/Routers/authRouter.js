@@ -17,6 +17,7 @@ authRouter
     .route('/signup')
     .get(middleware, getSignUp, middleware2)
     .post(postSignUp);
+
 function middleware(req, res, next) {
     console.log("Middleware encountered");
     next();
@@ -62,6 +63,10 @@ async function loginUser(req, res) {
             if (user) {
                 //bcrypt->compare
                 if (user.password == data.password) {
+
+                    //in protect route video
+                    res.cookie('isLoggedIn',true,{httpOnly: true});
+
                     return res.json({
                         message: "User has logged in",
                         userDetails: data
