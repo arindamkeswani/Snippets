@@ -53,12 +53,12 @@ userSchema.pre('save', function(){
     this.confirmPassword=undefined;//wont save in db now
 })
 
-userSchema.pre('save', async function(){
-    let salt = await bcrypt.genSalt();
-    let hashedString =await bcrypt.hash(this.password, salt);
-    this.password = hashedString;
-    console.log(hashedString);
-})
+// userSchema.pre('save', async function(){
+//     let salt = await bcrypt.genSalt();
+//     let hashedString =await bcrypt.hash(this.password, salt);
+//     this.password = hashedString;
+//     console.log(hashedString);
+// })
 //model
 
 //model name, shcema name
