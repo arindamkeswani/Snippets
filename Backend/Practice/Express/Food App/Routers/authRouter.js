@@ -1,7 +1,8 @@
 const express = require('express');
 const authRouter = express.Router();
 const userModel = require('../models/userModel');
-
+const jwt = require('jsonwebtoken');
+const JWT_KEY = require('../secrets');
 module.exports = authRouter
 
 authRouter
@@ -65,8 +66,13 @@ async function loginUser(req, res) {
                 if (user.password == data.password) {
 
                     //in protect route video
-                    res.cookie('isLoggedIn',true,{httpOnly: true});
+                    // res.cookie('isLoggedIn',true,{httpOnly: true});
 
+                    //JWT
+                    let uid = user['_id']; //uid
+                    let token = jwt.sign({payload: uid}, JWT_KEY);
+                    res.cookie('login',token,{httpOnly: true});
+                    //
                     return res.json({
                         message: "User has logged in",
                         userDetails: data
