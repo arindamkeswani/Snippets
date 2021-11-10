@@ -79,7 +79,7 @@ module.exports.login = async function loginUser(req, res) {
 }
 
 //check the user's role [admin, restaurant owner, normal user, delivery boy]
-module.exports.isAuthorized = async function isAuthorized(roles) {
+module.exports.isAuthorized = function isAuthorized(roles) {
     return function (req, res, next) {
         if (roles.include(req.role) == true) {
             next(); //will run next middleware, getAllUsers
