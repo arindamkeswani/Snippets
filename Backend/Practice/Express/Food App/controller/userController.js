@@ -88,7 +88,7 @@ module.exports.deleteUser = async function deleteUser(req, res) {
     }
 }
 
-module.exports.getAllUsers = function getAllUsers(req, res) {
+module.exports.getAllUsers = async function getAllUsers(req, res) {
     try{
     let users = await userModel.find();
     if(users){
