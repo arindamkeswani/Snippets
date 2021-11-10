@@ -32,10 +32,10 @@ const userSchema = mongoose.Schema({
     },
     confirmPassword:{
         type:String,
-        required:true,
+        required:false,
         minLength:8,
         validate: function(){
-            return this.confirmPassword==this.password
+            return this.confirmPassword==this.password;
         }
     },
     role:{

@@ -1,7 +1,7 @@
 const express = require('express');
 const userModel = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-const JWT_KEY = require('../secrets');
+const JWT_KEY = require('../../Food App/secrets').JWT_KEY;
 
 
 //sign up user
@@ -41,7 +41,7 @@ module.exports.login = async function loginUser(req, res) {
 
                     //in protect route video
                     // res.cookie('isLoggedIn',true,{httpOnly: true});
-
+                    // console.log(JWT_KEY);
                     //JWT
                     let uid = user['_id']; //uid
                     let token = jwt.sign({ payload: uid }, JWT_KEY);
@@ -81,7 +81,8 @@ module.exports.login = async function loginUser(req, res) {
 //check the user's role [admin, restaurant owner, normal user, delivery boy]
 module.exports.isAuthorized = function isAuthorized(roles) {
     return function (req, res, next) {
-        if (roles.include(req.role) == true) {
+        console.log(req.role);
+        if (roles.includes(req.role) == true) {
             next(); //will run next middleware, getAllUsers
         }
         else {
@@ -99,13 +100,14 @@ module.exports.protectRoute = async function protectRoute(req, res, next) {
         let token;
         if (req.cookies.login) {
             token = req.cookies.login;
-            let payload = jwt.verify(token, JWT_KEY.JWT_KEY); //will return true if new signature and request's sign is same, otherwise false
+            let payload = jwt.verify(token, JWT_KEY); //will return true if new signature and request's sign is same, otherwise false
 
             if (payload) {
                 const user = await userModel.findById(payload.payload);
+                // console.log(user);
                 req.role = user.role;
                 req.id = user.id;
-
+                // console.log(payload,req.role,req.id);
                 next();
             }
             else {
@@ -115,6 +117,7 @@ module.exports.protectRoute = async function protectRoute(req, res, next) {
             }
         }
         else {
+            //can replace it with a redirect
             return res.json({
                 message: "Please login again."
             })
