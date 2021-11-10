@@ -32,7 +32,7 @@ const userSchema = mongoose.Schema({
     },
     confirmPassword:{
         type:String,
-        required:false,
+        required:true,
         minLength:8,
         validate: function(){
             return this.confirmPassword==this.password;
@@ -46,7 +46,8 @@ const userSchema = mongoose.Schema({
     profileImage:{
         type:String,
         default: 'img/users/default.jpeg '
-    }
+    },
+    resetToken:String
 });
 
 

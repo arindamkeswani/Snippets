@@ -129,3 +129,61 @@ module.exports.protectRoute = async function protectRoute(req, res, next) {
         })
     }
 }
+
+//forgot password
+module.exports.forgotpassword = async function forgotpassword(req, res) {
+    let { email } = req.body;
+    try {
+        const user = await userModel.findOne({ email: email });
+        if (user) {
+
+            //createResetToken is used to create a new token. It is attached to the schema
+            const resetToken = user.createResetToken();
+            //http://abc.com/resetpassword/resetToken
+            let resetPasswordLink = `${req.protocol}://${req.get("host")}/resetpassword/${resetToken}`;
+
+            //next, we send a mail to the user using nodemailer, done later
+        }
+        else {
+            return res.json({
+                message: "Email ID is not signed up."
+            })
+        }
+
+    }
+    catch (err) {
+        return res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+//reset password
+module.exports.resetpassword = async function resetpassword(req, res) {
+    try {
+        const token = req.params.token;
+        let { password, confirmPassword } = req.body;
+        const user = await userModel.findOne({ resetToken: token })
+        if (user) {
+
+
+            user.resetPasswordHandler(password, confirmPassword); //this function saves the new password in the database
+            await user.save();
+
+            res.json({
+                message: "Password changed successfully. Please log-in again"
+            })
+        }
+        else {
+            res.json({
+                message: "Invalid user or token."
+            })
+        }
+    
+    }
+    catch (err) {
+    return res.json({
+        message: err.message
+    })
+}
+}

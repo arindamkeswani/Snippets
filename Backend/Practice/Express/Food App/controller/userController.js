@@ -30,7 +30,7 @@ module.exports.getUser = async function getUser(req, res) {
 
 module.exports.updateUser = async function updateUser(req, res) {
 
-    // try {
+    try {
         let id = req.params.id;
         let user = await userModel.findById(id);
         
@@ -45,7 +45,8 @@ module.exports.updateUser = async function updateUser(req, res) {
             for (let i = 0; i < keys.length; i++) {
                 user[keys[i]] = dataToBeUpdated[keys[i]];
             }
-            console.log(user);
+            // console.log(user);
+            user.confirmPassword=user.password;
             let updatedUser = await user.save(); //to save in the document
             res.json({
                 message: "data updated successfully",
@@ -57,12 +58,12 @@ module.exports.updateUser = async function updateUser(req, res) {
                 message: "User not found. Cannot update details."
             })
         }
-    // }
-    // catch (err) {
-    //     res.json({
-    //         message: err.message
-    //     })
-    // }
+    }
+    catch (err) {
+        res.json({
+            message: err.message
+        })
+    }
 
 }
 
