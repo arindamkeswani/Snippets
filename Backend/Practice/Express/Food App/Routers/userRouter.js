@@ -1,45 +1,26 @@
+const { application } = require('express');
 const express = require('express');
 const userRouter = express.Router();
-const {getUser, postUser, deleteUser, updateUser, getUserByID} = require('../controller/userController')
+const {getUser,getAllUsers , deleteUser, updateUser } = require('../controller/userController')
 
 const protectRoute = require("./authHelper");
 
+//user options
 userRouter
-    .route('/')
-    .get(protectRoute, getUser)
-    .post(postUser)
+    .route('/:id')
     .patch(updateUser)
     .delete(deleteUser);
 
-    
+//profile page
+app.use(protectRoute)
 userRouter
-    .route('/getCookies')
-    // .get(getCookies)
-    
-userRouter
-    .route('/setCookies')
-    // .get(setCookies)
+    .route('/userProfile')
+    .get(getUser)
 
-    userRouter
-        .route('/:id')
-        .get(getUserByID);
-
-
-
-
-///////ProtectRoute
-// // let isLoggedIn = false; //user logged in or not
-// function protectRoute(req,res,next){
-//     // if(isLoggedIn){
-//     if(req.cookies.isLoggedIn){
-//         next();
-//     }
-//     else{
-//         return res.json({
-//             message: "Operation not allowed"
-//         })
-//     }
-// }
-    
+//admin specific function
+app.use(isAuthorized(['admin']))
+userRouter  
+    .route('')
+    .get(getAllUsers)
 
 module.exports = userRouter;
