@@ -6,80 +6,106 @@ const userModel = require('../models/userModels');
 
 
 module.exports.getUser = async function getUser(req, res) {
-    // res.send(users);
-    let allUsers = await userModel.find(); //list of all users
-    // let user = await userModel.findOne({name:"Pepcoder2"}); //list of all users
-    console.log(allUsers);
-    res.json({
-        message: "List of all users",
-        data: allUsers
-    })
+    let id = req.id;
+    let user = await userModel.findById(id);
+    // console.log(req);
+    try {
+        if (user) {
+            return res.json(user);
+        } else {
+            res.json({
+                message: "User not found. Could not retrieve details."
+            })
+        }
+    }
+    catch (err) {
+        res.json({
+            message: err.message
+        })
+    }
 }
 
-module.exports.postUser =  function postUser(req, res) {
-    console.log(req.body);
-    users = req.body;
-    res.json({
-        message: "Data received successfully",
-        user: req.body
-    });
-}
 
 module.exports.updateUser = async function updateUser(req, res) {
-    // console.log("req.body->", req.body);
 
-    // let dataToBeUpdatedInOriginalObject = req.body;
-    // for (key in dataToBeUpdatedInOriginalObject) {
-    //     users[key] = dataToBeUpdatedInOriginalObject[key];
-    // }
+    try {
+        let id = req.params.id;
+        let user = await userModel.findById(id);
+        let dataToBeUpdated = req.body;
 
-    // res.json({
-    //     message: "Data updated successfully"
-    // })
+        if (user) {
+            const keys = []
+            for (let key in dataToBeUpdated) {
+                keys.push(key)
+            }
 
-    let dataToBeUpdatedInOriginalObject = req.body;
-    let user = await userModel.findOneAndUpdate({ email: "pepcoder@gmail.com" }, dataToBeUpdatedInOriginalObject);
+            for (let i = 0; i < keys.length; i++) {
+                user[keys[i]] = dataToBeUpdated[keys[i]];
+            }
 
-    res.json({
-        message: "Data updated successfully"
-    })
+            console.log(user);
+            user.confirmPassword = user.password;
+            const updatedData = await user.save(); //save data in the document
+            console.log(updatedData)
+            res.json({
+                message: "Data updated successfully.",
+                data: user
+            })
+        }
+        else {
+            res.json({
+                message: "User not found. Could not update details."
+            })
+        }
+    }
+    catch (err) {
+        res.json({
+            message: err.message
+        })
+    }
 }
 
 module.exports.deleteUser = async function deleteUser(req, res) {
-    let user = await userModel.findOneAndDelete({ email: "pepcoder@gmail.com" });
-    res.json({
-        message: "Data deleted successfully",
-        data: user
-    })
-}
-
-module.exports.getUserById = function getUserById(req, res) {
-    let paramId = req.params.id;
-    let obj = {}
-
-    for (let i = 0; i < users.length; i++) {
-        if (users[i]['id'] == paramId) {
-            obj = users[i];
+    try {
+        let id = req.params.id;
+        let user = await userModel.findByIdAndDelete(id);
+        if (user) {
+            res.json({
+                message: "Data has been deleted",
+                data: user
+            })
+        } else {
+            res.json({
+                message: "User not found. Could not delete user."
+            })
         }
     }
-
-    res.json({
-        message: "Request received",
-        data: obj
-    })
+    catch (err) {
+        res.json({
+            message: err.message
+        })
+    }
 }
 
-//////////////// Cookies
-// function setCookies(req, res) {
-//     // res.setHeader('Set-Cookie', 'isLoggedIn=true');
-//     res.cookie('isLoggedIn', true, { maxAge: 1000 * 60 * 60 * 24, secure: true, httpOnly: true })
-//     res.cookie('isPrimeMember', true, { maxAge: 1000 * 60 * 60 * 24, secure: true, httpOnly: true })
-//     res.send("cookies have been sent");
-// }
+module.exports.getAllUsers = async function getAllUsers(req, res) {
+    try {
+        let users = await userModel.find();
 
-// function getCookies(req, res) {
-//     let cookies = req.cookies.isPrimeMember;
-//     console.log(cookies);
-//     res.send("Cookies received");
-// }
+        if (users) {
+            res.json({
+                message: "Users retrieved",
+                data: users
+            })
+        }else{
+            res.json({
+                message: "Users not found. Could not retrieve list of all users."
+            })
+        }
+    }
+    catch (err) {
+        res.json({
+            message: err.message
+        })
+    }
+}
 

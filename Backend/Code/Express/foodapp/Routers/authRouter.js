@@ -3,52 +3,23 @@ const authRouter = express.Router();
 const userModel = require('../models/userModels');
 var jwt = require('jsonwebtoken');
 const JWT_KEY = require('../../secrets').JWT_KEY;
-authRouter
-    .route("/signup")
-    .get(middleware, getSignUp, middleware2)
-    .post(postSignUp)
 
-authRouter
-    .route("/login")
-    .post(loginUser)
+// function getSignUp(req,res,next){
+//     console.log("getSignUp encountered");
+//     // res.sendFile("./public/index.html", {root:__dirname});
+//     next();
+// }
 
-function middleware(req,res,next){
-    console.log("Midddleware");
-    next();
-}
+// async function postSignUp(req,res){
+//     let dataObj = req.body;
+//     // console.log("Backend",dataObj);
 
-function middleware2(req,res,next){
-    console.log("Midddleware 2 ended req res cycle");
-    res.sendFile("./public/index.html", {root:__dirname});
-}
-
-// app.get('/users', (req,res)=>{
-//     console.log("Hello");
-//     console.log(req.query);
-//     // res.send(users);
-// })
-
-////////////////MOUNTING
-
-
-
-/////////////SIGN UP
-function getSignUp(req,res,next){
-    console.log("getSignUp encountered");
-    // res.sendFile("./public/index.html", {root:__dirname});
-    next();
-}
-
-async function postSignUp(req,res){
-    let dataObj = req.body;
-    // console.log("Backend",dataObj);
-
-    let newUser = await userModel.create(dataObj);
-    res.json({
-        message: "User signed up",
-        data:newUser
-    })
-}
+//     let newUser = await userModel.create(dataObj);
+//     res.json({
+//         message: "User signed up",
+//         data:newUser
+//     })
+// }
 
 /////////////LOGIN
 async function loginUser(req,res){

@@ -39,6 +39,16 @@ const userSchema = mongoose.Schema({
             return this.confirmPassword == this.password;
         }
     },
+    role:{
+        type: String,
+        enum: ['admin', 'user', 'restaurantOwner', 'deliveryExec'],
+        default: 'user'
+    },
+    profileImage:{
+        type: String,
+        default: 'img/users/default.jpg'
+    },
+    resetToken:String
 });
 
 userSchema.pre('save', function(){
@@ -46,16 +56,6 @@ userSchema.pre('save', function(){
     this.confirmPassword = undefined;
 })
 
-// userSchema.pre('save', async function(){
-//     let salt= await bcrypt.genSalt();
-//     let hashedString = await bcrypt.hash(this.password, salt);
-
-//     this.password = hashedString;
-//     console.log(hashedString);
-// } )
-// userSchema.post('save', function(doc){
-//     console.log("After saving in database", doc);
-// })
 
 const userModel = mongoose.model('userModel', userSchema);
 
