@@ -119,9 +119,15 @@ module.exports.protectRoute = async function protectRoute(req, res, next) {
         }
         else {
             //can replace it with a redirect
-            return res.json({
-                message: "Please login again."
-            })
+            const client = req.get('User-Agent');
+            if (client.includes("Mozilla") == true) {
+                return res.redirect('/login');
+            }
+            else {
+                return res.json({
+                    message: "Please login again."
+                })
+            }
         }
     }
     catch (err) {
@@ -180,11 +186,18 @@ module.exports.resetpassword = async function resetpassword(req, res) {
                 message: "Invalid user or token."
             })
         }
-    
+
     }
     catch (err) {
-    return res.json({
-        message: err.message
-    })
+        return res.json({
+            message: err.message
+        })
+    }
 }
+
+module.exports.logout = function logout(req, res) {
+    res.cookie('login', ' ', { maxAge: 1 })
+    res.json({
+        message: "User logged out successfully"
+    });
 }
