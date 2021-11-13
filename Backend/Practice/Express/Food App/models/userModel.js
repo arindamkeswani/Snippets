@@ -75,7 +75,7 @@ userSchema.pre('save', function(){
 
 userSchema.methods.createResetToken = function(){
     //creating unique token using crypto
-    const resetToken = crypto.resetToken(32);
+    const resetToken = crypto.randomBytes(32);
     console.log("Normal:", resetToken);
     resetToken = resetToken.toString("hex");
     console.log("Hex:", resetToken);
