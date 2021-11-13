@@ -10,6 +10,7 @@ module.exports.signup = async function signup(req, res) {
         let dataObj = req.body
         let user = await userModel.create(dataObj);
         if (user) {
+            console.log(user);
             return res.json({
                 message: "user signed up",
                 data: user

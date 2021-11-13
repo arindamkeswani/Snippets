@@ -57,7 +57,9 @@ module.exports.signup = async function signup(req, res) {
     try {
         let dataObj = req.body;
         let user = await userModel.create(dataObj);
+        
         if (user) {
+            console.log(user);
             return res.json({
                 message: "User signed up",
                 data: user

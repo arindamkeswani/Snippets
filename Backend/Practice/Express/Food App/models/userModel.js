@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const emailValidator = require('email-validator');
 const bcrypt = require('bcrypt');
-
+const crypto = require('crypto');
 db_link='mongodb+srv://admin:foodappadmin@cluster0.t8urz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 mongoose.connect(db_link)
@@ -72,6 +72,28 @@ userSchema.pre('save', function(){
 //model
 
 //model name, shcema name
+
+userSchema.methods.createResetToken = function(){
+    //creating unique token using crypto
+    const resetToken = crypto.resetToken(32);
+    console.log("Normal:", resetToken);
+    resetToken = resetToken.toString("hex");
+    console.log("Hex:", resetToken);
+
+    //Set value in Schema
+    this.resetToken = resetToken;
+    return resetToken;
+
+}
+
+userSchema.methods.resetPasswordHandler = function(password, confirmPassword){
+    this.password = passsword;
+    this.confirmPassword = confirmPassword;
+
+    //We do not want this value after new pwd is set
+    this.resetToken = undefined;
+}
+
 const userModel = mongoose.model('userModel', userSchema);
 
 // (async function createUser(){
