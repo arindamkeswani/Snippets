@@ -38,3 +38,7 @@ app.use("/auth", authRouter)
 /////plan Router
 const planRouter = require('./Routers/planRouter');  ;
 app.use("/plans", planRouter)
+
+
+const reviewRouter = require('./Routers/reviewRouter');  ;
+app.use("/reviews", reviewRouter)
