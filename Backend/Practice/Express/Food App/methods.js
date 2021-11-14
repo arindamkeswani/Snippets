@@ -35,5 +35,6 @@ const authRouter = require('./Routers/authRouter');
 app.use("/auth", authRouter)
 
 
-/////plan Model
-const planModel = require('./models/planModel');
+/////plan Router
+const planRouter = require('./Routers/planRouter');  ;
+app.use("/plans", planRouter)

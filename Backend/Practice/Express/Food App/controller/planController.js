@@ -1,9 +1,9 @@
-const plaModel = require('../models/planModel')
+const planModel = require('../models/planModel')
 
 
 module.exports.getAllPlans = async function getAllPlans(req, res) {
     try {
-        let plans = await model.find();
+        let plans = await planModel.find();
         if (plans) {
             return res.json({
                 message: "All plans retrieved",
@@ -26,8 +26,8 @@ module.exports.getAllPlans = async function getAllPlans(req, res) {
 module.exports.getPlan = async function getPlan(req, res) {
     try {
         let id = req.params.id;
-        let plan = await model.findById();
-        if (id) {
+        let plan = await planModel.findById(id);
+        if (plan) {
             return res.json({
                 message: "Plan retrieved.",
                 data: plan
@@ -49,7 +49,7 @@ module.exports.getPlan = async function getPlan(req, res) {
 module.exports.createPlan = async function createPlan(req, res) {
     try {
         let planData = req.body;
-        let createdPlan = await planModel.createPlan(planData);
+        let createdPlan = await planModel.create(planData);
         return res.json({
             message: "Plan created successfully.",
             plan: createdPlan
@@ -88,13 +88,20 @@ module.exports.updatePlan = async function updatePlan(req, res) {
         for (let key in dataToBeUpdated) {
             keys.push(key);
         }
+        // console.log(keys, dataToBeUpdated[keys[0]]);
         let plan = await planModel.findById(id);
 
-        for (let key in keys) {
-            plan[keys] = dataToBeUpdated[key];
+        for (let i=0; i<keys.length; i++) {
+            plan[keys[i]] = dataToBeUpdated[keys[i]];
         }
-
+        console.log(plan);
         await plan.save();
+        // console.log(plan);
+
+        res.json({
+            message: "Updated successfully",
+            data: plan
+        })
     }
     catch (err) {
         res.status(500).json({
