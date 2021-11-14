@@ -33,19 +33,7 @@ app.use("/user", userRouter)
     //SIGN UP FORM VIDEO
 const authRouter = require('./Routers/authRouter');  
 app.use("/auth", authRouter)
-/////////////////////////MOUNTING
 
 
-
-////////////////////////////////////////////////////////////////
-
-
-
-
-//MONGODB and MONGOOSE
-
-//promise based function
-
-
-
-//////Cookies
+/////plan Model
+const planModel = require('./models/planModel');
