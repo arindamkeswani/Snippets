@@ -2,15 +2,16 @@ const express = require('express');
 const userModel = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const JWT_KEY = require('../../Food App/secrets').JWT_KEY;
-
+const {sendMail} =require('./utility/nodemailer');
 
 //sign up user
 module.exports.signup = async function signup(req, res) {
     try {
         let dataObj = req.body
         let user = await userModel.create(dataObj);
+        sendMail("signup", user)
         if (user) {
-            console.log(user);
+            // console.log(user);
             return res.json({
                 message: "user signed up",
                 data: user
@@ -150,6 +151,12 @@ module.exports.forgotpassword = async function forgotpassword(req, res) {
             let resetPasswordLink = `${req.protocol}://${req.get("host")}/resetpassword/${resetToken}`;
 
             //next, we send a mail to the user using nodemailer, done later
+            let obj={
+                resetPasswordLink: resetPasswordLink,
+                email: email
+            }
+            sendMail("resetpassword", obj);
+
         }
         else {
             return res.json({
