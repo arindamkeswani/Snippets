@@ -1,6 +1,6 @@
 const reviewModel = require('../models/reviewModel');
 const planModel = require('../models/planModel');
-const { updatePlan } = require('./planController');
+// const { updatePlan } = require('./planController');
 
 module.exports.getAllReviews = async function getAllReviews(req, res) {
     try {
@@ -25,7 +25,7 @@ module.exports.getAllReviews = async function getAllReviews(req, res) {
 }
 
 
-module.reviews.top3reviews = async function top3reviews(req, res) {
+module.exports.top3reviews = async function top3reviews(req, res) {
     try {
         const topThreeReviews = await reviewModel.find().sort({
             rating: -1
@@ -50,15 +50,17 @@ module.reviews.top3reviews = async function top3reviews(req, res) {
     }
 }
 
-module.reviews.getPlanReviews = async function getPlanReviews(req, res) {
+module.exports.getPlanReviews = async function getPlanReviews(req, res) {
     try {
-        let id = req.params.id;
-        const review = await reviewModel.findById(id);
-
-        if (review) {
+        
+        let planID = req.params.plan;
+        // let plan = await planModel.findById(planID);
+        let reviews = await reviewModel.find();
+        reviews=reviews.filter(reviews=>reviews.plan["_id"]==planID);
+        if (reviews) {
             return res.json({
-                message: "Review",
-                data: review
+                message: "Reviews",
+                data: reviews
             })
         }
         else {
@@ -74,14 +76,16 @@ module.reviews.getPlanReviews = async function getPlanReviews(req, res) {
     }
 }
 
-module.exports.createPlan = async function createPlan(req, res) {
+module.exports.createReview = async function createPlan(req, res) {
     try {
-        let id = req.params.plan;
-        let plan = await planModel.findById(id);
+        let planID = req.params.plan;
+        let plan = await planModel.findById(planID);
+
         let createdReview = await reviewModel.create(req.body);
         plan.ratingsAverage = (plan.ratingsAverage * plan.noOfReviews + req.body.rating) / (plan.noOfReviews + 1) //update it properly
         plan.noOfReviews = plan.noOfReviews + 1;
         await plan.save();
+        
 
         res.json({
             message: "Review created.",
@@ -98,7 +102,8 @@ module.exports.createPlan = async function createPlan(req, res) {
 module.exports.updateReview = async function updateReview(req, res) {
 
     try {
-        let id = req.params.id;
+        let planID = req.params.plan;
+        let id = req.body.id;
         let review = await reviewModel.findById(id);
 
         let dataToBeUpdated = req.body;
@@ -124,23 +129,30 @@ module.exports.updateReview = async function updateReview(req, res) {
     }
 }
 
-module.exports.deletePlan = async function deletePlan(req, res) {
-    try {
-        let id = req.params.plan;
-        let plan = await planModel.findByIdAndDelete(id);
-        let createdReview = await reviewModel.create(req.body);
-        plan.ratingsAverage = (plan.ratingsAverage * plan.noOfReviews + req.body.rating) / (plan.noOfReviews + 1) //update it properly
-        plan.noOfReviews = plan.noOfReviews + 1;
+module.exports.deleteReview = async function deletePlan(req, res) {
+    // try {
+        let planID = req.params.plan;
+        let id = req.body.id;
+        let reviewToBeDeleted = await reviewModel.findById(id);
+        let plan = await planModel.findById(planID);
+        // console.log(reviewToBeDeleted);
+        // console.log(plan);
+        let newNumOfReviews = (plan.noOfReviews - 1 <= 0)? 0: plan.noOfReviews-1;
+        // console.log(newNumOfReviews, plan.noOfReviews, plan.noOfReviews, reviewToBeDeleted.rating);
+        plan.ratingsAverage = (newNumOfReviews==0 || plan.noOfReviews ==0)? 5: ((plan.ratingsAverage*plan.noOfReviews - reviewToBeDeleted.rating) / (newNumOfReviews)) //update it properly
+        
+        plan.noOfReviews = newNumOfReviews;
         await plan.save();
+        await reviewModel.findByIdAndDelete(id);
 
         res.json({
             message: "Review deleted.",
-            data: createdReview
+            data: reviewToBeDeleted
         });
-    }
-    catch (err) {
-        return res.status(500).json({
-            message: err.message
-        })
-    }
+    // }
+    // catch (err) {
+    //     return res.status(500).json({
+    //         message: err.message
+    //     })
+    // }
 }

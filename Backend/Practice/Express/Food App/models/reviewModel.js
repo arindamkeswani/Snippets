@@ -20,7 +20,7 @@ const reviewSchema = new mongoose.Schema({
     rating: {
         type: Number,
         min: 1,
-        max=10,
+        max:10,
         required: [true, "Rating is required."]
     },
     createdAt: {
@@ -39,16 +39,16 @@ const reviewSchema = new mongoose.Schema({
     }
 })
 
-const reviewModel = mongoose.model('reviewModel', reviewSchema);
 
 //populate selective data in user field
 //populate all data in plan field
 reviewSchema.pre(/^find/,function(next){
     this.populate({
-        path:user,
+        path:"user",
         select: "name profileImage"  
     }).populate("plan");
     next();
-})
+});
 
+const reviewModel = mongoose.model('reviewModel', reviewSchema);
 module.exports= reviewModel;
