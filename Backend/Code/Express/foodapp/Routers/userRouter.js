@@ -6,7 +6,7 @@ const{getUser, deleteUser, updateUser, getAllUsers} = require('../controller/use
 
 const userModel = require('../models/userModels');
 // const protectRoute = require('./authHelper')
-const {login, signup, isAuthorized, protectRoute} = require('../controller/authController');
+const {login, signup, isAuthorized, protectRoute, logout} = require('../controller/authController');
 const {forgotpassword, resetpassword}= require('../controller/authController');
 //user options
 userRouter
@@ -44,5 +44,8 @@ userRouter
     .route("")
     .get(getAllUsers)
 
+userRouter 
+    .route("/logout")
+    .get(logout)
 
 module.exports = userRouter;

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const emailValidator = require('email-validator')
 const bcrypt = require('bcrypt');
-
+const crypto = require('crypto');
 
 db_link = "mongodb+srv://admin:hfBZ0Hc1fhpMkCrU@cluster0.srt8s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 // hfBZ0Hc1fhpMkCrU
@@ -55,6 +55,22 @@ userSchema.pre('save', function(){
     // console.log("Before saving in database", this);
     this.confirmPassword = undefined;
 })
+
+userSchema.methods.createResetToken = function(){
+    //create a unique token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    console.log(resetToken);
+    this.resetToken = resetToken;
+    return resetToken;
+}
+
+userSchema.methods.resetPasswordHandler = function(password, confirmedPassword){
+    this.password = password;
+    this.confirmPassword = confirmedPassword;
+
+    //Remove the reset token
+    this.resetToken = undefined;
+}
 
 
 const userModel = mongoose.model('userModel', userSchema);
