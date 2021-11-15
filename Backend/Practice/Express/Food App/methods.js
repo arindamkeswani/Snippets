@@ -42,3 +42,6 @@ app.use("/plans", planRouter)
 
 const reviewRouter = require('./Routers/reviewRouter');  ;
 app.use("/reviews", reviewRouter)
+
+const bookingRouter = require('./Routers/bookingRouter');
+app.use('/booking', bookingRouter);
