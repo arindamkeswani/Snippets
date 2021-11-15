@@ -18,12 +18,12 @@ reviewRouter
     
 reviewRouter.use(protectRoute)
 reviewRouter
-    .route('/modify')
+    .route('/reviewAction')
     .post(createReview)
 
 reviewRouter.use(isAuthorized['admin'])
 reviewRouter
-    .route('/modify/:id')
+    .route('/reviewAction/:id')
     .patch(updateReview)
     .delete(deleteReview)
 

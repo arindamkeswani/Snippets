@@ -35,6 +35,10 @@ const planSchema = new mongoose.Schema({
         validate: [function () {
             return this.discount < 100
         }, 'Discount should not exceed price.']
+    }, 
+    noOfReviews: {
+        type: Number,
+        default: 0
     }
 });
 
