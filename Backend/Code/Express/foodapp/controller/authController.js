@@ -3,7 +3,7 @@ const authRouter = express.Router();
 const userModel = require('../models/userModels');
 var jwt = require('jsonwebtoken');
 const JWT_KEY = require('../../secrets').JWT_KEY;
-
+const {sendMail} =require('./utility/nodemailer');
 
 
 module.exports.login = async function loginUser(req, res) {
@@ -57,7 +57,7 @@ module.exports.signup = async function signup(req, res) {
     try {
         let dataObj = req.body;
         let user = await userModel.create(dataObj);
-
+        sendMail("signup", user)
         if (user) {
             console.log(user);
             return res.json({
@@ -148,6 +148,11 @@ module.exports.protectRoute = async function protectRoute(req, res, next) {
                     // console.log(resetpasswordlink);
 
                     //next, we send this link to the user via email
+                    let obj={
+                        resetPasswordLink: resetPasswordLink,
+                        email: email
+                    }
+                    sendMail("resetpassword", obj);
                 }
                 else {
                     return res.json({

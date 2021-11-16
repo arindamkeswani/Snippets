@@ -109,3 +109,6 @@ module.exports.getAllUsers = async function getAllUsers(req, res) {
     }
 }
 
+module.exports.uploadProfileImage = async function uploadProfileImage(req,res){
+    res.json("Profile image uploaded successfully.")
+}

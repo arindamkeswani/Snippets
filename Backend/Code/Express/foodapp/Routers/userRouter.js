@@ -1,8 +1,8 @@
 const express = require('express');
 
 const userRouter = express.Router();
-
-const{getUser, deleteUser, updateUser, getAllUsers} = require('../controller/userController');
+let multer = require('multer');
+const{getUser, deleteUser, updateUser, getAllUsers, uploadProfileImage} = require('../controller/userController');
 
 const userModel = require('../models/userModels');
 // const protectRoute = require('./authHelper')
@@ -30,6 +30,36 @@ userRouter
 userRouter
     .route("/resetpassword/:token")
     .post(resetpassword)
+
+
+
+const multerStorage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, 'foodapp/public/images')
+    },
+    filename: function(req, file, cb){
+        cb(null, `user-${Date.now()}.jpeg`)
+    }
+})
+
+const filter = function(req, file,cb){
+    if(file.mimetype.startsWith('image')){
+        cb(null, true)
+    }
+    else{
+        cb(new Error("Uploaded file must be an image."), false);
+    }
+}
+
+const upload = multer({
+    storage: multerStorage,
+    filter: filter
+})
+
+userRouter.post('/ProfileImage', upload.single('photo'), uploadProfileImage)
+userRouter.get('/ProfileImage', (req,res)=>{
+    res.sendFile('E:/Snippets/Backend/Code/Express/views/multer.html')
+})
 
 //profile page
 userRouter.use(protectRoute)

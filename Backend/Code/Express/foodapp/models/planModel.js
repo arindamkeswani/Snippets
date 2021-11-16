@@ -38,7 +38,12 @@ const planSchema = new mongoose.Schema({
         validate: [function(){
             return this.discount < 100, "Discount cannot be more than 100%."
         }]
+    },
+    noOfReviews:{
+        type: Number,
+        default: 0
     }
+
 })
 
 const planModel = mongoose.model('planModel', planSchema);

@@ -82,3 +82,9 @@ async function postSignUp(req,res){
 //plan router
 const planRouter = require('./foodapp/Routers/planRouter');
 app.use("/plans", planRouter)
+
+const reviewRouter = require('./foodapp/Routers/reviewRouter');
+app.use("/reviews", reviewRouter)
+
+const bookingRouter = require('./foodapp/Routers/bookingRouter');
+app.use("/booking", bookingRouter)
