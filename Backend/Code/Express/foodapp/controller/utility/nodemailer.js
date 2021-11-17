@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const {smtp_id, smtp_pass} = require('../../../secrets');
+const {smtp_id, smtp_pass} = require('../../secrets');
 // const {nodemailer_passkey}=require('./secrets');
 // https - 443 http 8080
 //userObj-> name email password 

@@ -35,7 +35,7 @@ userRouter
 
 const multerStorage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, 'foodapp/public/images')
+        cb(null, 'public/images')
     },
     filename: function(req, file, cb){
         cb(null, `user-${Date.now()}.jpeg`)
@@ -58,7 +58,7 @@ const upload = multer({
 
 userRouter.post('/ProfileImage', upload.single('photo'), uploadProfileImage)
 userRouter.get('/ProfileImage', (req,res)=>{
-    res.sendFile('E:/Snippets/Backend/Code/Express/views/multer.html')
+    res.sendFile('E:/Snippets/Backend/Code/Express/foodapp/views/multer.html')
 })
 
 //profile page

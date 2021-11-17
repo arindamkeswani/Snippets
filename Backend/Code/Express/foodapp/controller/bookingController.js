@@ -1,4 +1,4 @@
-let SK=require('../../secrets').stripe_secret;
+let SK=require('../secrets').stripe_secret;
 const stripe=require('stripe')(SK);
 const planModel = require("../models/planModel");
 const userModel = require("../models/userModels");
