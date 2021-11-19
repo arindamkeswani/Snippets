@@ -1,7 +1,7 @@
 import express, { application } from "express"
 import cors from "cors"
 import authRouter from "./routes/auth.js"
-import postRouter from "./routes/post.js"
+// import postRouter from "./routes/post.js"
 
 const app = express()
 app.use(cors({
@@ -18,7 +18,7 @@ app.get("/test", (req, res) => {
 
 
 app.use("/api/auth", authRouter)
-app.use("/api/posts", postRouter)
+// app.use("/api/posts", postRouter)
 
 app.listen(8080, () => {
     console.log("server is running on the port 8080");
