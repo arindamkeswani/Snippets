@@ -78,6 +78,7 @@ postRouter.get("/mypost/:id", authMiddleware, (req, res) => {
         })
 })
 
+//likes
 
 postRouter.post('/dolike/:id', authMiddleware, (req, res) => {
     const id = req.params.id;
@@ -198,17 +199,17 @@ postRouter.get('/undolike/:id', authMiddleware, (req, res) => {
     })
 })
 
-postRouter.get('/countlike/:id', authMiddleware, (req, res) => {
+postRouter.get('/countlikes/:id', (req, res) => {
     const id = req.params.id;
     connection.query("select count(*) as count from likes where post_id =?", [id], (err, result) => {
         if (err) {
             res.json({
-                success:0,
+                success: 0,
                 error: err.message
             })
         }
-        else{
-            if(result.length>0){
+        else {
+            if (result.length > 0) {
                 res.json({
                     result: result[0]
                 })
@@ -216,4 +217,101 @@ postRouter.get('/countlike/:id', authMiddleware, (req, res) => {
         }
     })
 })
+
+
+
+
+
+
+//comments
+//add comment
+postRouter.post("/comment/:id", authMiddleware, (req, res) => {
+    const id = req.params.id //post id
+    const text = req.body.text;
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(" ")[1];
+    // console.log(token);
+    jwt.verify(token, secret, (err, user) => {
+        if (err) {
+            res.send({
+                success: 0,
+                error: "Cannot comment on the post at this time."
+            })
+        }
+        else {
+            connection.query("insert into comments(user_id,post_id,text) values (?,?,?)", [user.id, id, text], (err, result) => {
+                if (err) {
+                    res.json({
+                        success: 0,
+                        error: err.message
+                    })
+                }
+                else {
+                    res.json({
+                        success: 1,
+                        data: text
+                    })
+                }
+            })
+        }
+    })
+})
+
+//delete comment
+postRouter.delete("/deletecomment/:id", authMiddleware, (req, res) => {
+    const id = req.params.id; //comment id
+    connection.query("delete from comments where id=?", [id], (err, result) => {
+        if (err) {
+            res.json({
+                success: 0,
+                error: err.message
+            })
+        }
+        else {
+            res.json({
+                success: 1
+            })
+        }
+    })
+})
+
+//update comment
+postRouter.patch("/updatecomment/:id", authMiddleware, (req,res)=>{
+    const id = req.params.id; //comment id
+    const text = req.body.text;
+    connection.query("update comments set text=? where id =?", [text, id], (err,result)=>{
+        if(err){
+            res.json({
+                succeess: 0,
+                error: err.message
+            })
+        }   
+        else{
+            res.json({
+                success: 1,
+                updatedComment: text
+            })
+        }
+    } )
+})
+
+//getcomments of post
+postRouter.get("/getcomments/:id", authMiddleware, (req, res)=>{
+    const id = req.params.id; //post id
+    connection.query("select * from comments inner join users on comments.user_id = users.id where comments.post_id=?", [id], (err, result)=>{
+        if(err){
+            res.json({
+                success: 0,
+                error: err.message
+            })
+        }
+        else{
+            res.json({
+                success: 1,
+                result: result
+            })
+        }
+    })
+})
+
 export default postRouter
