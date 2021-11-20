@@ -4,7 +4,7 @@ import secret from '../secret.js';
 function authMiddleware(req, res, next) {
     const authHeadder = req.headers['authorization'];
     const token = authHeadder && authHeadder.split(" ")[1];
-    console.log(authHeadder);
+    // console.log(authHeadder);
     if (token == null) res.json({
         error: "Auth failed",
         success: 0
