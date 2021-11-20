@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import express from "express"
+=======
+import express, { application } from "express"
+>>>>>>> 922d29124c5c5b2a865c5ece7dcc5199e324559e
 import cors from "cors"
 import authRouter from "./routes/auth.js"
 import postRouter from "./routes/post.js"

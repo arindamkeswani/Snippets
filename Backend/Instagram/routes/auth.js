@@ -3,8 +3,13 @@ import connection from "../db.js";
 import bcrypt from "bcrypt"
 import jsonwebtoken from "jsonwebtoken";
 import secret from "../secret.js";
+<<<<<<< HEAD
 // import authMiddleware from "../middleware/authMiddleware.js";
 // import jwt from "jsonwebtoken"
+=======
+import authMiddleware from "../middleware/authMiddleware.js";
+import jwt from "jsonwebtoken"
+>>>>>>> 922d29124c5c5b2a865c5ece7dcc5199e324559e
 const authRouter = express.Router()
 
 
