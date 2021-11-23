@@ -198,7 +198,9 @@ function addingeventlistener(cell) {
                 break;
         }
 
-
+        let formulaBar = document.querySelector(".formula-bar");
+        formulaBar.value = cellProp.formula
+        cell.value = cellProp.value
 
     })
 }
@@ -214,7 +216,8 @@ function activecell(address) {
 
 
 function decoderidcid(address)//A1
-{
+{   
+    console.log(address);
     let rid = Number(address.slice(1)) - 1; //"1" -> 0
     let cid = Number(address.charCodeAt(0)) - 65; //"A" - >0
     return [rid, cid];

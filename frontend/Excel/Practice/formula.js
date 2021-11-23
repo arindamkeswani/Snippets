@@ -6,9 +6,17 @@ for (let i = 0; i < rows; i++) {
             let address = addressbar.value;
             let [cell, cellProp] = activecell(address);
             let enteredval = cell.innerText;
-            cellProp.value = enteredval;
-            console.log(cellProp);
 
+            if(enteredval === cellProp.value) return;
+
+            cellProp.value = enteredval;
+            // console.log(cellProp);
+
+            //remove children down the chain and remove formula
+            removeChildFromParent(cellProp.formula)
+            cellProp.formula = ""
+            
+            updateChildrenCells(address) //If data is modified, update children with new modifed value
         })
     }
 }
@@ -25,13 +33,30 @@ formulabar.addEventListener("keydown", (e) => {
         }
         let evaluatedval = evaluateformula(inputformula);
         
-        setuivalAndcellprop(evaluatedval, inputformula);
+        setuivalAndcellprop(evaluatedval, inputformula,address);
 
         addChildToParent(inputformula)
-        console.log(sheetDB);
+        // console.log(sheetDB);
+
+        updateChildrenCells(address)
     }
 
 })
+
+function updateChildrenCells(parentAddress){
+    let [parentCell, parentCellProp] = activecell(parentAddress);
+    let children = parentCellProp.children;
+
+    for(let i=0; i<children.length; i++){
+        let childAddress = children[i];
+        let [childCell, childCellProp] = activecell(childAddress);
+        let childFormula = childCellProp.formula
+
+        let evaluatedVal = evaluateformula(childFormula)
+        setuivalAndcellprop(evaluatedVal, childFormula, childAddress)
+        updateChildrenCells(childAddress)
+    }
+}
 
 function addChildToParent(formula) {
     let childAddress = addressbar.value
@@ -77,8 +102,8 @@ function evaluateformula(formula) {
     return eval(decodedformula);
 }
 
-function setuivalAndcellprop(evaluatedval, inputformula) {
-    let address = addressbar.value;
+function setuivalAndcellprop(evaluatedval, inputformula, address) {
+    // let address = addressbar.value;
     let [cell, cellprop] = activecell(address)
 
     //UI part
