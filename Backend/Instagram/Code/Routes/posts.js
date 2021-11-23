@@ -17,6 +17,7 @@ postRouter.get("/allPosts", authMiddleware, (req, res) => {
         }
         else {
             if (result.length > 0) {
+                // console.log(result);
                 res.json({
                     result,
                     success: 1
