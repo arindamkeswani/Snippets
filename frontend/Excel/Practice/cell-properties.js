@@ -14,6 +14,7 @@ for (let i = 0; i < rows; i++) {
             fontSize: "14",
             value: "",
             formula: "",
+            children:[]
         }
         sheetRow.push(cellProp);
 
