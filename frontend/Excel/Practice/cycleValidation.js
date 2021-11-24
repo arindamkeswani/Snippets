@@ -1,7 +1,7 @@
 let collectedGraphComponent = []
 
 //storage-> 2D Matrix (Basic requirement). When we put child it will turn into 3D matrix
-// let graphComponentMatrix = [];
+let graphComponentMatrix = [];
 
 // //Get 2D representation (100x26)
 // for (let i = 0; i < rows; i++) {

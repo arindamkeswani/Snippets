@@ -1,6 +1,6 @@
 let addSheetButton = document.querySelector(".sheet-add-icon");
 let sheetsFolderCont = document.querySelector(".sheet-folder-cont");
-
+activeSheetColor = "#ced6e0";
 
 addSheetButton.addEventListener("click", (e) => {
     let sheet = document.createElement("div");
@@ -17,12 +17,55 @@ addSheetButton.addEventListener("click", (e) => {
     createSheetDB();
     createGraphComponentMatrix();
     handleActiveSheet(sheet);
+    handleSheetRemoval(sheet)
     sheet.click()
 })
 
+function handleSheetRemoval(sheet) {
+    sheet.addEventListener("mousedown", (e) => {
+        // Right click
+        if (e.button !== 2) return;
+
+        let allSheetFolders = document.querySelectorAll(".sheet-folder");
+        if (allSheetFolders.length === 1) {
+            alert("At least 1 sheet is required.");
+            return;
+        }
+
+        let response = confirm("Your sheet will be removed permanently, Are you sure?");
+        if (response === false) return;
+
+        let sheetIdx = Number(sheet.getAttribute("id"));
+        // DB
+        collectedSheetDB.splice(sheetIdx, 1);
+        collectedGraphComponent.splice(sheetIdx, 1);
+        // UI
+        handleSheetUIRemoval(sheet)
+
+        // By default DB to sheet 1 (active)
+        sheetDB = collectedSheetDB[0];
+        graphComponentMatrix = collectedGraphComponent[0];
+        handleSheetProps();
+    })
+}
+
+function handleSheetUIRemoval(sheet) {
+    sheet.remove();
+    let allSheetFolders = document.querySelectorAll(".sheet-folder");
+    for (let i = 0;i < allSheetFolders.length;i++) {
+        allSheetFolders[i].setAttribute("id", i);
+        let sheetContent = allSheetFolders[i].querySelector(".sheet-content");
+        sheetContent.innerText = `Sheet ${i+1}`;
+        allSheetFolders[i].style.backgroundColor = "transparent";
+    }
+
+    allSheetFolders[0].style.backgroundColor = activeSheetColor;
+}
+
+
 function handleSheetDB(sheetIdx){
     // console.log(sheetIdx);
-    console.log(collectedSheetDB[sheetIdx]);
+    // console.log(collectedSheetDB[sheetIdx]);
     sheetDB = collectedSheetDB[sheetIdx]    
     graphComponentMatrix = collectedGraphComponent[sheetIdx];
 }
@@ -46,7 +89,7 @@ function handleSheetUI(sheet){
         allSheetFolders[i].style.backgroundColor="transparent"
     }
 
-    sheet.style.backgroundColor = "#ced6e0";
+    sheet.style.backgroundColor = activeSheetColor;
 }
 
 function handleActiveSheet(sheet){
@@ -86,7 +129,7 @@ function createSheetDB() {
 }
 
 function createGraphComponentMatrix() {
-    let graphComponentMatrix = [];
+    graphComponentMatrix = [];
 
     //Get 2D representation (100x26)
     for (let i = 0; i < rows; i++) {
