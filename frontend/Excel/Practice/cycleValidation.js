@@ -47,31 +47,31 @@ function isGraphCyclic(graphComponentMatrix) {
     return false;
 }
 
-// //Start-> vis(True) dfs(vis) = true
-// //End-> dfsVis = false
-// //if visited[i][j]=true, already explored, no need to see again
-// //Cycle detection comdn-> if (vis[i][j]==true && dfsVis[i][j] == true) -> cycle
+//Start-> vis(True) dfs(vis) = true
+//End-> dfsVis = false
+//if visited[i][j]=true, already explored, no need to see again
+//Cycle detection comdn-> if (vis[i][j]==true && dfsVis[i][j] == true) -> cycle
 
-// //Return boolean
-// function dfsCycleDetection(graphComponentMatrix, sr, sc, visited, dfsVisited) {
-//     visited[sr][sc] = true;
-//     dfsVisited[sr][sc] = true;
+//Return boolean
+function dfsCycleDetection(graphComponentMatrix, sr, sc, visited, dfsVisited) {
+    visited[sr][sc] = true;
+    dfsVisited[sr][sc] = true;
 
-//     //traverse through children
-//     for (let child = 0; child < graphComponentMatrix[sr][sc].length; child++) {
-//         let [nr, nc] = graphComponentMatrix[sr][sc][child]
-//         if (visited[nr][nc] === false) {
-//             let res = dfsCycleDetection(graphComponentMatrix, nr, nc, visited, dfsVisited)
-//             if (res === true) {
-//                 return true; //found cycle so return immediately
-//             }
-//         }
-//         else if (visited[nr][nc] === true && dfsVisited[nr][nc] === true) { //found cycle
-//             return true;
-//         }
-//     }
+    //traverse through children
+    for (let child = 0; child < graphComponentMatrix[sr][sc].length; child++) {
+        let [nr, nc] = graphComponentMatrix[sr][sc][child]
+        if (visited[nr][nc] === false) {
+            let res = dfsCycleDetection(graphComponentMatrix, nr, nc, visited, dfsVisited)
+            if (res === true) {
+                return true; //found cycle so return immediately
+            }
+        }
+        else if (visited[nr][nc] === true && dfsVisited[nr][nc] === true) { //found cycle
+            return true;
+        }
+    }
 
 
-//     dfsVisited[sr][sc] = false;
-//     return false;
-// }
+    dfsVisited[sr][sc] = false;
+    return false;
+}
