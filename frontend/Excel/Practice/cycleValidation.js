@@ -38,13 +38,13 @@ function isGraphCyclic(graphComponentMatrix) {
             if (visited[i][j] == false) {
                 let res = dfsCycleDetection(graphComponentMatrix, i, j, visited, dfsVisited);
                 if (res === true) {
-                    return true; //cycle found
+                    return [i,j]; //cycle found
                 }
             }
         }
     }
 
-    return false;
+    return null;
 }
 
 //Start-> vis(True) dfs(vis) = true
