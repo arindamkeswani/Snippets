@@ -35,6 +35,15 @@ formulabar.addEventListener("keydown", (e) => {
         addChildToGraphComponent(inputformula, address)
         //check if formula is cyclic or not. Then evaluate, if valid
 
+        console.log(graphComponentMatrix)
+        let isCyclic = isGraphCyclic(graphComponentMatrix)
+            console.log(isCyclic);
+        if(isCyclic===true){
+            alert("Your formula has cyclic dependencies")
+            removeChildFromGraph(inputformula, address);
+            return;
+        }
+
         let evaluatedval = evaluateformula(inputformula);
         
         setuivalAndcellprop(evaluatedval, inputformula,address);
@@ -58,9 +67,27 @@ function addChildToGraphComponent(formula, childAddress){
         if(ascii >= 65 && ascii <=90){
             let [prid, pcid] = decoderidcid(encodedformula[i]);
             //insert child in 2D matrix
+            // console.log(graphComponentMatrix[prid][pcid], crid, ccid);
             graphComponentMatrix[prid][pcid].push([crid, ccid]);
         }
     }
+}
+
+function removeChildFromGraph(formula, childAddress){
+    let [crid,ccid] = decoderidcid(childAddress);
+
+    //decode parent details, go through formula
+    let encodedformula = formula.split(" ");
+    for(let i=0; i<encodedformula.length;i++ ){
+        let ascii = encodedformula[i].charCodeAt(0);
+        if(ascii >= 65 && ascii <=90){
+            let [prid, pcid] = decoderidcid(encodedformula[i]);
+            //remove child from 2D matrix
+            graphComponentMatrix[prid][pcid].pop();
+        }
+    }
+
+
 }
 
 function updateChildrenCells(parentAddress){
