@@ -1,4 +1,4 @@
-function isGraphCyclicTracePath(graphComponentMatrix, cycleResponse) {
+async function isGraphCyclicTracePath(graphComponentMatrix, cycleResponse) {
     let [sr,sc] = cycleResponse
     let visited = []
     let dfsVisited = []
@@ -27,9 +27,9 @@ function isGraphCyclicTracePath(graphComponentMatrix, cycleResponse) {
     //     }
     // }
 
-    let response = dfsCycleDetection(graphComponentMatrix, sr, sc, visited, dfsVisited);
+    let response = await dfsCycleDetectionTracePath(graphComponentMatrix, sr, sc, visited, dfsVisited);
     if(response === true){
-        return true;
+        return Promise.resolve(true);
     }
 
     return false;
@@ -57,11 +57,12 @@ async function dfsCycleDetectionTracePath(graphComponentMatrix, sr, sc, visited,
     for (let child = 0; child < graphComponentMatrix[sr][sc].length; child++) {
         let [nr, nc] = graphComponentMatrix[sr][sc][child]
         if (visited[nr][nc] === false) {
-            let res = dfsCycleDetection(graphComponentMatrix, nr, nc, visited, dfsVisited)
+            let res = await dfsCycleDetectionTracePath(graphComponentMatrix, nr, nc, visited, dfsVisited)
             if (res === true) {
-                cell.style.backgroundColor = "lightblue"
+                cell.style.backgroundColor = "transparent"
                 await colorPromise()
-                return true; 
+                // return true; 
+                return Promise.resolve(true)
             }
         }
         else if (visited[nr][nc] === true && dfsVisited[nr][nc] === true) { 
@@ -69,13 +70,17 @@ async function dfsCycleDetectionTracePath(graphComponentMatrix, sr, sc, visited,
             
             cyclicCell.style.backgroundColor = "lightsalmon"    
             await colorPromise()
-            
             cyclicCell.style.backgroundColor = "transparent"
-            return true;
+            
+            await colorPromise()
+            cell.style.backgroundColor = "transparent"
+            await colorPromise()
+
+            return Promise.resolve(true)
         }
     }
 
-
+    
     dfsVisited[sr][sc] = false;
-    return false;
+    return Promise.resolve(false)
 }

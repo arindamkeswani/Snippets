@@ -22,7 +22,7 @@ for (let i = 0; i < rows; i++) {
 }
 
 let formulabar = document.querySelector(".formula-bar");
-formulabar.addEventListener("keydown", (e) => {
+formulabar.addEventListener("keydown", async (e) => {
     let inputformula = formulabar.value;
     if (e.key === "Enter" && inputformula) {
         let address = addressbar.value
@@ -43,8 +43,8 @@ formulabar.addEventListener("keydown", (e) => {
             let response = confirm("Your path has cyclic dependencies. Do you wish to trace the path?")
             while(response === true){
                 //keep on tracking colour
-                isGraphCyclicTracePath(graphComponentMatrix, isCyclic)
-                let response = confirm("Your path has cyclic dependencies. Do you wish to trace the path?")
+                await isGraphCyclicTracePath(graphComponentMatrix, isCyclic) //complete full color tracking, then ask. Attach wait
+                response = confirm("Your path has cyclic dependencies. Do you wish to trace the path?")
             }
             removeChildFromGraph(inputformula, address);
             return;
