@@ -39,7 +39,13 @@ formulabar.addEventListener("keydown", (e) => {
         let isCyclic = isGraphCyclic(graphComponentMatrix)
             console.log(isCyclic);
         if(isCyclic===true){
-            alert("Your formula has cyclic dependencies")
+            // alert("Your formula has cyclic dependencies")
+            let response = confirm("Your path has cyclic dependencies. Do you wish to trace the path?")
+            while(response === true){
+                //keep on tracking colour
+                isGraphCyclicTracePath(graphComponentMatrix)
+                let response = confirm("Your path has cyclic dependencies. Do you wish to trace the path?")
+            }
             removeChildFromGraph(inputformula, address);
             return;
         }
