@@ -167,7 +167,7 @@ body{
     text-decoration: underline;
     font-weight: bold;
     text-decoration-thickness : 2px ;
-    background-color: lightgray;
+    /* background-color: lightgray; */
     text-align: center;
     display: flex;
     justify-content: center;
@@ -176,7 +176,7 @@ body{
 
 .sheet-content{
     width: 5rem;
-    background-color: lightgreen;
+    /* background-color: lightgreen; */
 }
 
 .color-prop{

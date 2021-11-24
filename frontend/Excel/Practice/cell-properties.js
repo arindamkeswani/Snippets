@@ -1,6 +1,11 @@
 let collectedSheetDB =[]
-// let sheetDB = [];
+let sheetDB = [];
 
+{
+    let addSheetButton = document.querySelector(".sheet-add-icon");
+    addSheetButton.click();
+    // handleSheetProps();
+}
 // for (let i = 0; i < rows; i++) {
 //     let sheetRow = [];
 //     for (let j = 0; j < column; j++) {
@@ -159,6 +164,8 @@ function addingeventlistener(cell) {
         //Task Area
         let address = addressbar.value;
         let [rid, cid] = decoderidcid(address);
+        // console.log(rid, cid);
+        // console.log(sheetDB[rid][cid]);
         let cellProp = sheetDB[rid][cid];
 
         //TASK AT CELL
@@ -201,7 +208,7 @@ function addingeventlistener(cell) {
 
         let formulaBar = document.querySelector(".formula-bar");
         formulaBar.value = cellProp.formula
-        cell.value = cellProp.value
+        cell.innerText = cellProp.value
 
     })
 }

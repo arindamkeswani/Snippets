@@ -15,7 +15,48 @@ addSheetButton.addEventListener("click", (e) => {
 
     sheetsFolderCont.appendChild(sheet);
     createSheetDB();
+    createGraphComponentMatrix();
+    handleActiveSheet(sheet);
+    sheet.click()
 })
+
+function handleSheetDB(sheetIdx){
+    // console.log(sheetIdx);
+    console.log(collectedSheetDB[sheetIdx]);
+    sheetDB = collectedSheetDB[sheetIdx]    
+    graphComponentMatrix = collectedGraphComponent[sheetIdx];
+}
+
+function handleSheetProps(){
+    for(let i=0; i<rows; i++){
+        for(let j =0; j<column; j++){
+            let cell = document.querySelector(`.cells[rid = "${i}"][cid = "${j}"]`);
+            cell.click();
+        }
+    }
+
+    let firstcell = document.querySelector(".cells");
+    firstcell.click();
+}
+
+function handleSheetUI(sheet){
+    let allSheetFolders =document.querySelectorAll(".sheet-folder");
+
+    for(let i=0; i<allSheetFolders.length; i++){
+        allSheetFolders[i].style.backgroundColor="transparent"
+    }
+
+    sheet.style.backgroundColor = "#ced6e0";
+}
+
+function handleActiveSheet(sheet){
+    sheet.addEventListener("click", (e)=>{
+        let sheetIdx = Number(sheet.getAttribute("id"));
+        handleSheetDB(sheetIdx); //to retrieve the attributes of cells in current sheet
+        handleSheetProps();
+        handleSheetUI(sheet);
+    })
+}
 
 function createSheetDB() {
     let sheetDB = [];
@@ -42,21 +83,8 @@ function createSheetDB() {
         sheetDB.push(sheetRow);
     }
     collectedSheetDB.push(sheetDB);
-    createGraphComponentMatrix();
-    handleActiveSheet(sheet);
 }
 
-// function handleSheetDB(sheetIdx){
-//     sheetDB = collectedSheetDB[sheetIdx]    
-//     graphComponentMatrix = collectedGraphComponent[sheetIdx];
-// }
-
-function handleActiveSheet(sheet){
-    sheet.addEventListener("click", (e)=>{
-        let sheetIdx = Number(sheet.getAttribute("id"));
-        handleSheetDB(sheetIdx); //to retrieve anbd overwrite the values
-    })
-}
 function createGraphComponentMatrix() {
     let graphComponentMatrix = [];
 
