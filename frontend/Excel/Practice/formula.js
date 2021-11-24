@@ -31,6 +31,10 @@ formulabar.addEventListener("keydown", (e) => {
         if (inputformula != cellProp.formula) {
             removeChildFromParent(cellProp.formula)
         }
+
+        addChildToGraphComponent(inputformula, address)
+        //check if formula is cyclic or not. Then evaluate, if valid
+
         let evaluatedval = evaluateformula(inputformula);
         
         setuivalAndcellprop(evaluatedval, inputformula,address);
@@ -42,6 +46,22 @@ formulabar.addEventListener("keydown", (e) => {
     }
 
 })
+
+function addChildToGraphComponent(formula, childAddress){
+    //decode child details
+    let [crid,ccid] = decoderidcid(childAddress);
+
+    //decode parent details, go through formula
+    let encodedformula = formula.split(" ");
+    for(let i=0; i<encodedformula.length;i++ ){
+        let ascii = encodedformula[i].charCodeAt(0);
+        if(ascii >= 65 && ascii <=90){
+            let [prid, pcid] = decoderidcid(encodedformula[i]);
+            //insert child in 2D matrix
+            graphComponentMatrix[prid][pcid].push([crid, ccid]);
+        }
+    }
+}
 
 function updateChildrenCells(parentAddress){
     let [parentCell, parentCellProp] = activecell(parentAddress);
