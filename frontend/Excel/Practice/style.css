@@ -151,17 +151,32 @@ body{
 .sheet-add-icon{
     width: 2rem;
 }
+.sheet-add-icon:hover{
+    cursor: default;
+}
 .sheet-folder-cont{
     height: 70%;
     width: calc(100vw - 2rem);
     
     display: flex;
     align-items: center;
+    overflow: auto;
 }
 .sheet-folder{
+    height: 80%;
     text-decoration: underline;
     font-weight: bold;
     text-decoration-thickness : 2px ;
+    background-color: lightgray;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sheet-content{
+    width: 5rem;
+    background-color: lightgreen;
 }
 
 .color-prop{
