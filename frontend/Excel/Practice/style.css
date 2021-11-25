@@ -15,9 +15,25 @@ body{
     font-family: sans-serif;
 }
 .page-action{
-    margin: 1rem;
+    /* margin: 1rem; */
+    width: 4rem;
+    height: 2rem;
+    text-align:center;
     color: #ecf0f1;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.page-action:hover{
+    background-color: #ecf0f1;
+    color: #218c74;   
+}
+.selected-page-action{
+    background-color: #ecf0f1;
+    color: #218c74;     
+}
+
 .cellprop-action-cont{
     height: 3rem;
     background-color: #ecf0f1;
