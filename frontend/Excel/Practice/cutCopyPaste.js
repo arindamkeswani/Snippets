@@ -154,3 +154,42 @@ pasteBtn.addEventListener("click", (e) => {
         }
     }
 })
+
+cutBtn.addEventListener("click", (e)=>{
+    // clipboard=[];
+    let srow = rangeStorage[0][0];
+    let erow = rangeStorage[1][0];
+    let scol = rangeStorage[0][1];
+    let ecol = rangeStorage[1][1];
+
+    for (let i = Math.min(srow, erow); i <= Math.max(srow, erow); i++) {
+        
+        for (let j = Math.min(scol, ecol); j <= Math.max(scol, ecol); j++) {
+            let cellProp = sheetDB[i][j];
+
+            let cell = document.querySelector(`.cells[rid = "${i}"][cid = "${j}"]`);
+
+            //DB
+            cellProp.bold = false;
+            cellProp.italic = false;
+            cellProp.underline = false;
+            cellProp.alignment = "left";
+            cellProp.fontColor = "#000000";
+            cellProp.BGcolor = "#000000"
+            cellProp.fontFamily = "monospace";
+            cellProp.fontSize = 14;
+            cellProp.value = "";
+
+            //UI
+            cell.click()
+        }
+    }
+
+    for (let i = rangeStorage.length - 1; i >= 0; i--) {
+        let prevCell = document.querySelector(`.cells[rid = "${rangeStorage[i][0]}"][cid = "${rangeStorage[i][1]}"]`);
+        prevCell.style.border = "1px solid #dfe4ea";
+    }
+
+    console.log(clipboard);
+
+})
