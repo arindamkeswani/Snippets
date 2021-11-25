@@ -24,7 +24,6 @@ function handleSelectedCells(cell) {
     cell.addEventListener("click", (e) => {
         //Select range of cells
         //will need a storage to keep track of selected cells
-        console.log(ctrlKey);
         if (!ctrlKey) {
 
            
@@ -37,6 +36,7 @@ function handleSelectedCells(cell) {
 
 
             cell.style.border = "1px solid #dfe4ea"
+            console.log(rangeStorage);
             return;
         }
 
@@ -52,7 +52,7 @@ function handleSelectedCells(cell) {
             let cid = Number(cell.getAttribute("cid"));
             rangeStorage.push([rid, cid]);
 
-            console.log(rangeStorage);
+            console.log(rangeStorage[0], rangeStorage[1]);
             return;
 
 
