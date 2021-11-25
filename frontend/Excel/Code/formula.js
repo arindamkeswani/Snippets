@@ -24,7 +24,7 @@ for(let i = 0; i<rows ;i++)
 }
 
 let formulabar = document.querySelector(".formula-bar");
-formulabar.addEventListener("keydown",(e)=>{
+formulabar.addEventListener("keydown",async (e)=>{
     let inputformula = formulabar.value;
     if(e.key === "Enter" && inputformula)
     {
@@ -34,6 +34,23 @@ formulabar.addEventListener("keydown",(e)=>{
         if(inputformula != cellProp.formula){
             removeChildFromParent(cellProp.formula)
         }
+
+        addChildToGraphComponent(inputformula,address)
+        //if graph is cyclic, we send an alert. Otherwise, we evaluate.
+        let isCyclic = isGraphCyclic(graphComponentMatrix)
+
+        if(isCyclic){
+            // alert("Your formula has cyclic dependencies.")
+            let response = confirm("Your path has cyclic dependencies. Do you wish to trace the path?")
+            while(response){
+                //keep on tracking cycle
+                await isGraphCyclicTracePath(graphComponentMatrix, isCyclic)
+                response = confirm("Your path has cyclic dependencies. Do you wish to trace the path?")
+            }
+            removeChildFromGraphComponent(inputformula, address);
+            return;
+        }
+
         let evaluatedval = evaluateformula(inputformula);
         setuivalAndcellprop(evaluatedval,inputformula, address);  
         
@@ -46,6 +63,37 @@ formulabar.addEventListener("keydown",(e)=>{
     
 })
 
+function removeChildToGraphComponent(formula, childAddress){
+    //decode child details
+    let [crid, ccid] = decoderidcid(childAddress);
+
+    //decode parent details, go through formula
+    let encodedformula = formula.split(" ");
+    for(let i=0; i<encodedformula.length; i++){
+        let ascii = encodedformula[i].charCodeAt(0);
+        if(ascii >= 65 && ascii<=90){
+            let [prid, pcid] = decoderidcid(encodedformula[i]);
+            //remove child in graph matrix
+            graphComponentMatrix[prid][pcid].pop();
+        }
+    }
+}
+
+function addChildToGraphComponent(formula, childAddress){
+    //decode child details
+    let [crid, ccid] = decoderidcid(childAddress);
+
+    //decode parent details, go through formula
+    let encodedformula = formula.split(" ");
+    for(let i=0; i<encodedformula.length; i++){
+        let ascii = encodedformula[i].charCodeAt(0);
+        if(ascii >= 65 && ascii<=90){
+            let [prid, pcid] = decoderidcid(encodedformula[i]);
+            //insert child in graph matrix
+            graphComponentMatrix[prid][pcid].push([crid, ccid]);
+        }
+    }
+}
 
 function updateChildrenCells(parentAddress){
     let [parentCell, parentCellProp] = activecell(parentAddress)

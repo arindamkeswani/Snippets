@@ -57,7 +57,7 @@ function addressbarvalue(cell, i , j)
     })
 }
 
-let firstcell = document.querySelector(".cells");
-firstcell.click();
+// let firstcell = document.querySelector(".cells");
+// firstcell.click();
 
 

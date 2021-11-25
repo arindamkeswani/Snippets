@@ -1,27 +1,33 @@
+let collectedSheetDB = []
 let sheetDB = [];
 
-for (let i = 0; i < rows; i++) {
-    let sheetRow = [];
-    for (let j = 0; j < column; j++) {
-        let cellProp = {
-            bold: false,
-            italic: false,
-            underline: false,
-            alignment: "left",
-            fontColor: "#000000",
-            BGcolor: "#000000",
-            fontFamily: "monospace",
-            fontSize: "14",
-            value: "",
-            formula: "",
-            children: []
-        }
-        sheetRow.push(cellProp);
-
-    }
-    sheetDB.push(sheetRow);
-
+{
+    let addSheetBtn = document.querySelector(".sheet-add-icon");
+    addSheetBtn.click();
 }
+
+// for (let i = 0; i < rows; i++) {
+//     let sheetRow = [];
+//     for (let j = 0; j < column; j++) {
+//         let cellProp = {
+//             bold: false,
+//             italic: false,
+//             underline: false,
+//             alignment: "left",
+//             fontColor: "#000000",
+//             BGcolor: "#000000",
+//             fontFamily: "monospace",
+//             fontSize: "14",
+//             value: "",
+//             formula: "",
+//             children: []
+//         }
+//         sheetRow.push(cellProp);
+
+//     }
+//     sheetDB.push(sheetRow);
+
+// }
 
 //get the reference of properties
 let bold = document.querySelector(".bold");
@@ -200,7 +206,7 @@ function addingeventlistener(cell) {
 
         let formulaBar= document.querySelector(".formula-bar");
         formulaBar.value =cellProp.formula;
-        cell.value = cellProp.value
+        cell.innerText = cellProp.value
 
     })
 }
