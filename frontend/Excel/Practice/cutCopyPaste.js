@@ -1,3 +1,7 @@
+let copyBtn = document.querySelector(".copy")
+let cutBtn = document.querySelector(".cut")
+let pasteBtn = document.querySelector(".paste")
+
 //this var will store whether ctrl key is pressed or not (true or false)
 let ctrlKey = false;
 
@@ -45,12 +49,13 @@ function handleSelectedCells(cell) {
             let prevCell = document.querySelector(`.cells[rid = "${rangeStorage[1][0]}"][cid = "${rangeStorage[1][1]}"]`);
             prevCell.style.border = "1px solid #dfe4ea"
 
-            rangeStorage.pop();
+            // rangeStorage.pop();
 
             cell.style.border = "3px solid #218c74"
             let rid = Number(cell.getAttribute("rid"));
             let cid = Number(cell.getAttribute("cid"));
-            rangeStorage.push([rid, cid]);
+            rangeStorage[1][0]=rid;
+            rangeStorage[1][1]=cid;
 
             console.log(rangeStorage[0], rangeStorage[1]);
             return;
@@ -69,3 +74,29 @@ function handleSelectedCells(cell) {
 
     })
 }
+
+//to store copied data
+let clipboard = []
+copyBtn.addEventListener("click", (e)=>{
+    let srow = rangeStorage[0][0];
+    let erow = rangeStorage[1][0];
+    let scol = rangeStorage[0][1];
+    let ecol = rangeStorage[1][1];
+
+    for(let i=Math.min(srow,erow); i<=Math.max(srow,erow); i++){
+        let copyRow = []
+        for(let j=Math.min(scol, ecol); j<=Math.max(scol, ecol); j++){
+            let cellProp = sheetDB[i][j];
+            copyRow.push(cellProp)
+        }
+        clipboard.push(copyRow);
+    }
+
+    for (let i = rangeStorage.length-1; i >=0; i--) {
+        let prevCell = document.querySelector(`.cells[rid = "${rangeStorage[i][0]}"][cid = "${rangeStorage[i][1]}"]`);
+        prevCell.style.border = "1px solid #dfe4ea";
+    }
+
+    console.log(clipboard);
+
+})
