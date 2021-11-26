@@ -3,7 +3,7 @@ let sheetFolderContainer = document.querySelector(".sheet-folder-cont");
 let activeSheetColour = "#ced6e0";
 
 addSheetBtn.addEventListener("click", (e) => {
-    console.log("Clicked");
+    // console.log("Clicked");
     let sheet = document.createElement("div")
     sheet.setAttribute("class", "sheet-folder")
 
@@ -17,7 +17,7 @@ addSheetBtn.addEventListener("click", (e) => {
     `
 
     sheetFolderContainer.appendChild(sheet)
-
+    sheet.scrollIntoView();
     createSheetDB();
     createGraphComponentMatrix()
     handleActiveSheet(sheet);
@@ -133,7 +133,7 @@ function handleSheetUI(sheet){
 function handleActiveSheet(sheet){
     sheet.addEventListener("click", (e)=>{
         let sheetIdx = Number(sheet.getAttribute("id"));
-        console.log(sheetIdx);
+        // console.log(sheetIdx);
         handleSheetDB(sheetIdx); //retrieve attributes from CollectedSheetDB
         handleSheetProps();
         handleSheetUI(sheet);
