@@ -19,22 +19,22 @@
                 <label for="login__username"><svg class="icon">
                         <use xlink:href="#icon-user"></use>
                     </svg><span class="hidden">Username</span></label>
-                <input autocomplete="username" id="login__username" type="text" name="username" class="form__input phone"
-                    placeholder="+[Country Code][Phone number]" required>
+                <input autocomplete="username" id="login__username" type="text" name="username"
+                    class="form__input phone" placeholder="+00 1234567890" required>
 
-                
+
             </div>
 
             <div class="form__field">
                 <div class="form__field otpSmsBtn">
-                    <button id="otpSmsBtn">Send OTP via SMS</button>
+                    <button class="button" id="otpSmsBtn">Send OTP via SMS</button>
                 </div>
                 <div class="form__field otpCallBtn">
-                    <button id="otpCallBtn">Send OTP via Call</button>
+                    <button class="button" id="otpCallBtn">Send OTP via Call</button>
                 </div>
-                <div class="form__field otpEmailBtn">
-                    <button id="otpEmailBtn">Send OTP via E-Mail</button>
-                </div>
+                <!-- <div class="form__field otpEmailBtn">
+                    <button class="button" id="otpEmailBtn">Send OTP via E-Mail</button>
+                </div> -->
             </div>
 
             <div class="form__field">
@@ -46,7 +46,7 @@
             </div>
 
             <div class="form__field submit">
-                <a href="home.html" id="submit">Login</a>
+                <button id="submit" class="button">Login</button>
                 <!-- <input type="submit" value="Sign In"> -->
             </div>
 
@@ -77,29 +77,57 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    let otpSmsBtn = document.querySelector('.otpSmsBtn');
-    otpSmsBtn.addEventListener('click',async function(e){
-        e.preventDefault();
-        let phone = document.querySelector(".phone").value;
-        let channel = "sms"
-        let resp =await axios.post('/user/verify/sms', {phone, channel});
-    })
 
-    let otpCallBtn = document.querySelector('.otpCallBtn');
-    otpCallBtn.addEventListener('click',async function(e){
+    let otpSmsBtn = document.querySelector('.otpSmsBtn');
+    otpSmsBtn.addEventListener('click', async function (e) {
         e.preventDefault();
         let phone = document.querySelector(".phone").value;
-        let channel = "call"
-        let resp =await axios.post('/user/verify/call', {phone, channel});
+        // let channel = "sms"
+        let resp = await axios.post('/user/verify/sms', { phone });
     })
 
     let submitBtn = document.querySelector('#submit');
-    submitBtn.addEventListener('click',async function(e){
+    submitBtn.addEventListener('click', async function (e) {
         e.preventDefault();
         let otp = document.querySelector("#login__password").value;
-        let phone = document.querySelector(".phone").value;
-        let resp =await axios.post('/user/login', {phone, otp});
+        // let phone = document.querySelector(".phone").value;
+        let resp = await axios.post('/user/login', { otp });
+
+        // let rec = axios.get('/user/login').then(resp => {
+
+        //     if(rec.data == "true"){
+        //         alert("Success")
+        //     }
+        //     else{
+        //         alert("Failed")
+        //     }
+        // });
     })
+
+    //---------------------------------------------------------------------
+    // let otpSmsBtn = document.querySelector('.otpSmsBtn');
+    // otpSmsBtn.addEventListener('click',async function(e){
+    //     e.preventDefault();
+    //     let phone = document.querySelector(".phone").value;
+    //     let channel = "sms"
+    //     let resp =await axios.post('/user/verify/sms', {phone, channel});
+    // })
+
+    // let otpCallBtn = document.querySelector('.otpCallBtn');
+    // otpCallBtn.addEventListener('click',async function(e){
+    //     e.preventDefault();
+    //     let phone = document.querySelector(".phone").value;
+    //     let channel = "call"
+    //     let resp =await axios.post('/user/verify/call', {phone, channel});
+    // })
+
+    // let submitBtn = document.querySelector('#submit');
+    // submitBtn.addEventListener('click',async function(e){
+    //     e.preventDefault();
+    //     let otp = document.querySelector("#login__password").value;
+    //     let phone = document.querySelector(".phone").value;
+    //     let resp =await axios.post('/user/login', {phone, otp});
+    // })
 
 </script>
 

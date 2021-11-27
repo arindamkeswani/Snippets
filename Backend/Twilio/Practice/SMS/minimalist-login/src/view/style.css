@@ -133,7 +133,8 @@
   .form input[type="password"],
   .form input[type="text"],
   .form input[type="submit"],
-  #submit {
+  #submit,
+  .button {
     inline-size: 100%;
   }
   
@@ -169,7 +170,8 @@
   .login input[type="text"],
   .login input[type="password"],
   .login input[type="submit"],
-  #submit
+  #submit,
+  .button
   {
     border-radius: var(--loginBorderRadus);
     padding: 1rem;
@@ -197,7 +199,8 @@
   }
   
   .login input[type="submit"],
-  #submit {
+  #submit,
+  .button {
     background-color: var(--loginSubmitBackgroundColor);
     color: var(--loginSubmitColor);
     font-weight: 700;
@@ -207,7 +210,9 @@
   .login input[type="submit"]:focus,
   .login input[type="submit"]:hover,
   #submit:focus,
-  #submit:hover {
+  #submit:hover,
+  .button:focus,
+  .button:hover {
     background-color: var(--loginSubmitHoverBackgroundColor);
   }
   
