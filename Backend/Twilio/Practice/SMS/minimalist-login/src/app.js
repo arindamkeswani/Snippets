@@ -1,26 +1,40 @@
 
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
+const mongoose = require("mongoose");
+// const emailValidator = require('email-validator');
+// const userModel = require('./models/userModels');
+// const cookieParser = require('cookie-parser');
 
-//Full path
+var cors = require('cors');
+app.use(cors())
+app.use(express.static('view'));
+
+app.use(express.json());
+
+// app.listen(3000);
+const port=process.env.PORT || 5000;
+app.listen(port, function(){
+    console.log(`server listening on port ${port}`);
+})
+// app.use(cookieParser());
+
 app.get('/', (req, res)=>{
-    res.sendFile('E:\\Snippets\\Backend\\Code\\Express\\views\\index.html');
+    res.sendFile('E:\\Snippets\\Backend\\Twilio\\Practice\\SMS\\minimalist-login\\src\\view\\index.html');
 }) 
 
-//relative path + dirname
+const userRouter = require('./router/userRouter');
+app.use("/user", userRouter);
 
-app.get('/about', (req, res)=>{
-    res.sendFile('./views/about.html', {root: __dirname});
-})
+// const authRouter = require('./Routers/authRouter');
+// app.use("/auth", authRouter)
 
-app.listen(3000)
+// authRouter
+//     .route("/signup")
+//     .get(middleware, getSignUp, middleware2)
+//     .post(postSignUp)
 
-//redirecting
-app.get('/aboutUs', (req, res)=>{
-    res.redirect('/about');
-})
 
-//404 - Page not found
-app.use((req,res)=>{
-    res.status(404).sendFile('./views/404.html', {root: __dirname});
-})
+
+
+
